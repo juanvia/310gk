@@ -116,10 +116,10 @@ function App() {
           <div>
 
             <label htmlFor="dimensions">Dimensions</label>
-            <input className="short" type="number" value={dimensions} name="dimensions" id="dimensions" onChange={handleChangeOfDimensions}></input>
+            <input className="short" type="number" max="4" min="1" value={dimensions} name="dimensions" id="dimensions" onChange={handleChangeOfDimensions}></input>
 
             <label htmlFor="degree">Degree</label>
-            <input className="short" type="number" value={degree} name="degree" id="degree" onChange={handleChangeOfDegree}></input>
+            <input className="short" type="number" max="9" min="1" value={degree} name="degree" id="degree" onChange={handleChangeOfDegree}></input>
 
             <label>Coefficients</label>
             <select onChange={handleChangeOfCoefficientsVariant}>
