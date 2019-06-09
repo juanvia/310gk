@@ -16,8 +16,22 @@ box-shadow: 4px 4px 8px 0px rgba(208,208,208,1);
   /* text-align: center; */
 }
 label {
-  margin-right: 0.5rem;
+  margin-right: 0.2rem;
 }
-input {
+input, select {
   margin-right: 2rem;
+}
+.left {
+    float: left;
+    width: 25%;
+}
+.right {
+    float: left;
+    width: 75%;
+}
+.clear {
+    clear: both;
+}
+.short {
+    width: 3rem;
 }

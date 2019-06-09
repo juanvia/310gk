@@ -4,7 +4,7 @@ import { reverse, zip } from "ramda";
 import { polynomial } from "math-playground";
 
 import { getExamples, Plot } from "./stuff";
-import { makeStackedMatrixOfGenerators } from "./anotherstuff"
+import { makeStackedMatrixOfGenerators, makePolynomial } from "./anotherstuff"
 
 const { matrix, multiply, transpose, inv } = require("mathjs");
 
@@ -20,6 +20,7 @@ const solve = (A, b) =>
 
   return row;
 }; */
+
 
 const makeRow = (input, degree) => {
   const row = [];
@@ -55,6 +56,29 @@ function App() {
 
   const [dimensions, setDimensions] = useState(3);  
   const [degree, setDegree] = useState(3);
+  const [stackedMatrixOfGenerators, setStackedMatrixOfGenerators] = useState(makeStackedMatrixOfGenerators(dimensions, degree))
+  const [coefficientsVariant, setCoefficientsVariant] = useState('traditional');
+  const [variablesVariant, setVariablesVariant] = useState('traditional');
+
+  const handleChangeOfDegree = e => {
+    setDegree(e.target.value)
+  }
+
+  const handleChangeOfDimensions = e => {
+    setDimensions(e.target.value)
+  }
+
+  const handleChangeOfCoefficientsVariant = e => {
+    setCoefficientsVariant(e.target.value)
+  }
+
+  const handleChangeOfVariablesVariant = e => {
+    setVariablesVariant(e.target.value)
+  }
+
+  const handleGoClick = () => {
+    setStackedMatrixOfGenerators(makeStackedMatrixOfGenerators(dimensions, degree))
+  }
 
   return (
     <div className="App">
@@ -86,14 +110,60 @@ function App() {
         </Section>
 
         <Section>
+
           <h3>Terms generator</h3>
-          <label htmlFor="dimensions">Dimensions</label>
-          <input type="number" value={dimensions} name="dimensions" id="dimensions" onChange={(e) => setDimensions(e.target.value)}></input>
-          <label htmlFor="degree">Degree</label>
-          <input type="number" value={degree} name="degree" id="degree" onChange={(e) => setDegree(e.target.value)}></input>
-          <pre>
-            {makeStackedMatrixOfGenerators(dimensions, degree).map(row => row+"\n")}<br/>
-          </pre>
+          
+          <div>
+
+            <label htmlFor="dimensions">Dimensions</label>
+            <input className="short" type="number" value={dimensions} name="dimensions" id="dimensions" onChange={handleChangeOfDimensions}></input>
+
+            <label htmlFor="degree">Degree</label>
+            <input className="short" type="number" value={degree} name="degree" id="degree" onChange={handleChangeOfDegree}></input>
+
+            <label>Coefficients</label>
+            <select onChange={handleChangeOfCoefficientsVariant}>
+                <option value="traditional">Traditional</option>
+                <option value="pedantic">Pedantic</option>
+            </select>
+            
+            <label>Variables</label>
+            <select onChange={handleChangeOfVariablesVariant}>
+                <option value="traditional">Traditional</option>
+                <option value="pedantic">Pedantic</option>
+            </select>
+            
+            <button onClick={handleGoClick}>Go</button>
+
+          </div>
+          
+
+          <p>
+
+            You'll need at least <b>{stackedMatrixOfGenerators.length}</b> data points, or 'training points' :), in order to obtain 
+            the coefficients for this type of polynomial
+          
+          </p>
+
+          <div className="left">
+
+            <h4>Generator matrix</h4>
+
+            <pre>
+                {stackedMatrixOfGenerators.map((row,index) => row + "\n")}<br/>
+            </pre>
+
+          </div>
+
+          <div className="right">
+
+            <h4>Polynomial</h4>
+
+            {makePolynomial(coefficientsVariant, variablesVariant, stackedMatrixOfGenerators)}
+
+          </div>
+
+          <div className="clear"></div>
 
         </Section>
       </div>
