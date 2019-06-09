@@ -83,13 +83,30 @@ export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
 
 const upperCases = range(65, 65+26).map(charCode => String.fromCharCode(charCode))
 const variableNames = "xyztuvw".split('')
+const Power = ({power, powerIndex}) => <>
+  { power === 0 ? '' 
+               : variableNames[powerIndex % variableNames.length]
+  }
+  <sup>{ power<2 ? '' : power }</sup>
+</>
+const Powers = ({powers}) => (
+  powers.map((power,powerIndex) => <Power key={powerIndex} power={power} powerIndex={powerIndex} />)
+)
+
+const Coefficient = ({index}) => <>
+  {upperCases[index % upperCases.length]}
+</>
+
 
 export const makePolynomial = (coefficientsVariant, variablesVariant, stackedMatrix) => {
-
-    const makeTerm = (powers, index, array) => {
-        return powers.reduce((s,p,i) =>  <span key={index}>{s}{(p === 0 ? '' : variableNames[i % variableNames.length])}<sup>{p<2?'':p}</sup></span>, <>{upperCases[index % array.length]}</>)
-    }
-    let terms =  stackedMatrix.map((powers, index, array) => <span key={index}>{makeTerm(powers, index, array)}{(index < array.length-1 ? ' + ' : '')}</span>)
+    const makeTerm = (powers, index, array) => <>
+        <Coefficient index={index} />
+        <Powers powers={powers} />
+    </>
+    
+    let terms =  stackedMatrix.map((powers, index, array) => <span key={index}>
+      {makeTerm(powers, index, array)}{(index < array.length-1 ? ' + ' : '')}
+    </span>)
 
     return <div>
         {terms}
