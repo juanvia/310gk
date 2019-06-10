@@ -90,24 +90,29 @@ const Power = ({power, powerIndex}) => <>
   <sup>{ power<2 ? '' : power }</sup>
 </>
 
-const Powers = ({powers}) => (
+const Powers = ({powers, variablesNotation}) => (
   powers.map((power,powerIndex) => <Power key={powerIndex} power={power} powerIndex={powerIndex} />)
 )
 
-const Coefficient = ({index}) => <>
+const Coefficient = ({index, coefficientsNotation}) => <>
   {upperCases[index % upperCases.length]}
 </>
 
-const Term = ({powers, index }) => <>
-  <Coefficient index={index} />
-  <Powers powers={powers} />
+const Term = ({powers, index, coefficientsNotation, variablesNotation }) => <>
+  <Coefficient index={index} coefficientsNotation={coefficientsNotation}/>
+  <Powers powers={powers} variablesNotation={variablesNotation}/>
 </>
 
 export const Polynomial = ({coefficientsNotation, variablesNotation, stackedMatrix}) => (
 
   stackedMatrix.map((powers, index, array) => <span key={index}>
     
-    <Term powers={powers} index={index} />
+    <Term 
+      powers={powers} 
+      index={index}
+      coefficientsNotation={coefficientsNotation}
+      variablesNotation={variablesNotation} 
+    />
     
     {/* if not last separate with plus sign */}
     {(index < array.length-1 ? ' + ' : '')} 
