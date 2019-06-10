@@ -83,20 +83,30 @@ export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
 
 export const upperCases = range(65, 65+26).map(charCode => String.fromCharCode(charCode))
 export const variableNames = "xyztuvw".split('')
-const Power = ({power, powerIndex}) => <>
+const PowerTraditionalNotation = ({power, powerIndex}) => <>
   { power === 0 ? '' 
                 : variableNames[powerIndex % variableNames.length]
   }
   <sup>{ power<2 ? '' : power }</sup>
 </>
+const PowerPedanticNotation = ({power, powerIndex}) => <>
+  { power === 0 ? '' 
+                : <>x<sub>{powerIndex+1}</sub></>
+  }
+  <sup>{ power<2 ? '' : power }</sup>
+</>
 
 const Powers = ({powers, variablesNotation}) => (
-  powers.map((power,powerIndex) => <Power key={powerIndex} power={power} powerIndex={powerIndex} />)
+  powers.map((power,powerIndex) => variablesNotation === 'traditional' 
+    ? <PowerTraditionalNotation key={powerIndex} power={power} powerIndex={powerIndex} />
+    : <PowerPedanticNotation key={powerIndex} power={power} powerIndex={powerIndex} /> 
+  )
 )
 
-const Coefficient = ({index, coefficientsNotation}) => <>
-  {upperCases[index % upperCases.length]}
-</>
+const Coefficient = ({index, coefficientsNotation}) => 
+  coefficientsNotation === "traditional" 
+    ? upperCases[index % upperCases.length]
+    : <>a<sub>{index+1}</sub></>
 
 const Term = ({powers, index, coefficientsNotation, variablesNotation }) => <>
   <Coefficient index={index} coefficientsNotation={coefficientsNotation}/>

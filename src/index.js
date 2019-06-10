@@ -4,7 +4,7 @@ import { reverse, zip } from "ramda";
 import { polynomial } from "math-playground";
 
 import { getExamples, Plot } from "./stuff";
-import { makeStackedMatrixOfGenerators, Polynomial } from "./anotherstuff"
+import { makeStackedMatrixOfGenerators, Polynomial, upperCases, variableNames } from "./anotherstuff"
 
 const { matrix, multiply, transpose, inv } = require("mathjs");
 
@@ -60,12 +60,23 @@ function App() {
   const [coefficientsNotation, setCoefficientsNotation] = useState('traditional');
   const [variablesNotation, setVariablesNotation] = useState('traditional');
 
+
+  const disciplineNotations = stackedMatrix => {
+    if (stackedMatrix.length > upperCases.length) {
+      setCoefficientsNotation('pedantic')
+    }
+    if (dimensions > variableNames.length) {
+      setVariablesNotation('pedantic')
+    }
+  }
+
   const handleChangeOfDegree = e => {
     setDegree(e.target.value)
   }
 
   const handleChangeOfDimensions = e => {
     setDimensions(e.target.value)
+
   }
 
   const handleChangeOfCoefficientsNotation = e => {
@@ -77,7 +88,9 @@ function App() {
   }
 
   const handleGoClick = () => {
-    setStackedMatrixOfGenerators(makeStackedMatrixOfGenerators(dimensions, degree))
+    let stackedMatrix = makeStackedMatrixOfGenerators(dimensions, degree)
+    disciplineNotations(stackedMatrix)
+    setStackedMatrixOfGenerators(stackedMatrix)
   }
 
   return (
