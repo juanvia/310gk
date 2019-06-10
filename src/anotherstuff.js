@@ -122,7 +122,7 @@ const Left = ({dimensions, variablesNotation}) => <>
         { 
           variablesNotation !== 'pedantic'
           ? range(0,dimensions).map(d => variableNames[d]).join(',')
-          : range(0,dimensions).map((d,i,a) => <>x<sub>{d+1}{i<a.length ? ',' : ''}</sub></>)
+          : range(0,dimensions).map((d,i,a) => <span key={i}>x<sub>{d+1}{i<a.length ? ',' : ''}</sub></span>)
         }
       </span>
   )
