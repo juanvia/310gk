@@ -96,8 +96,9 @@ function App() {
   }
 
   return (
+
     <div className="App">
-      <Section>
+{/*       <Section>
         <Plot
           paths={[
             plotForDegree(inputs, 1),
@@ -123,7 +124,7 @@ function App() {
             points={zip(inputs, outputs)}
             />
         </Section>
-
+ */}
         <Section>
 
           <h3>R<sup>n</sup> &rarr; R polynomial generator</h3>
@@ -163,6 +164,7 @@ function App() {
 
           </div>
           
+          <br/>
 
           <p>
 

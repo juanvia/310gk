@@ -1,14 +1,18 @@
 body {
+  /*
   background-color: #f0f0f0;
+  */
 }
 .Section {
+  /*  
   background-color: white;
   border-radius: 8px;
-  margin: 2rem;
   border: #e0e0e0 solid 1px;
   -webkit-box-shadow: 4px 4px 8px 0px rgba(208,208,208,1);
   -moz-box-shadow: 4px 4px 8px 0px rgba(208,208,208,1);
   box-shadow: 4px 4px 8px 0px rgba(208,208,208,1);
+  */
+  margin: 2rem;
   padding: 0.5rem;
 }
 .App {
@@ -17,6 +21,12 @@ body {
 }
 label {
   margin-right: 0.2rem;
+}
+hr {
+    margin-top:1rem;
+    margin-bottom:1rem;
+    background-color: #d0d0d0;
+
 }
 .left {
     float: left;
