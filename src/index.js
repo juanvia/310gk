@@ -127,7 +127,7 @@ function App() {
  */}
         <Section>
 
-          <h3>R<sup>n</sup> &rarr; R polynomial generator</h3>
+          <h3>&#x211D;<sup>n</sup>&#xffeb;&#x211D; polynomial generator</h3>
           
           <div>
             <div className="div5">
