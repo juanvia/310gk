@@ -126,29 +126,40 @@ function App() {
 
         <Section>
 
-          <h3>Terms generator</h3>
+          <h3>R<sup>n</sup> &rarr; R polynomial generator</h3>
           
           <div>
+            <div className="div5">
+                <div className="marginated">Domain dimension (number of independent variables)</div>
+                <input className="short" type="number" max="4" min="1" value={dimensions} name="dimensions" id="dimensions" onChange={handleChangeOfDimensions}></input>
+            </div>
 
-            <label htmlFor="dimensions">Dimensions</label>
-            <input className="short" type="number" max="4" min="1" value={dimensions} name="dimensions" id="dimensions" onChange={handleChangeOfDimensions}></input>
+            <div className="div5">
+                <div className="marginated">Polynomial's degree</div>
+                <input className="short" type="number" max="9" min="1" value={degree} name="degree" id="degree" onChange={handleChangeOfDegree}></input>
+            </div>
 
-            <label htmlFor="degree">Degree</label>
-            <input className="short" type="number" max="9" min="1" value={degree} name="degree" id="degree" onChange={handleChangeOfDegree}></input>
-
-            <label>Coefficients</label>
-            <select onChange={handleChangeOfCoefficientsNotation}>
-                <option value="traditional">Traditional</option>
-                <option value="pedantic">Pedantic</option>
-            </select>
+            <div className="div5">
+                <div className="marginated">Notation variant of the coefficients</div>
+                <select className="short" onChange={handleChangeOfCoefficientsNotation}>
+                    <option value="traditional">Traditional</option>
+                    <option value="pedantic">Pedantic</option>
+                </select>
+            </div>
             
-            <label>Variables</label>
-            <select onChange={handleChangeOfVariablesNotation}>
-                <option value="traditional">Traditional</option>
-                <option value="pedantic">Pedantic</option>
-            </select>
+            <div className="div5">
+                <div className="marginated">Notation variant of the independent variables</div>
+                <select className="short" onChange={handleChangeOfVariablesNotation}>
+                    <option value="traditional">Traditional</option>
+                    <option value="pedantic">Pedantic</option>
+                </select>
+            </div>
             
-            <button onClick={handleGoClick}>Go</button>
+            <div className="div5">
+                <button className="short" onClick={handleGoClick}>Go</button>
+            </div>
+
+            <div className="clear"></div>
 
           </div>
           
@@ -162,7 +173,7 @@ function App() {
 
           <div className="left">
 
-            <h4>Generator matrix</h4>
+            <h4>Powers matrix</h4>
 
             <pre>
                 {stackedMatrixOfGenerators.map(row => row + "\n")}<br/>

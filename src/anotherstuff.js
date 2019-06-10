@@ -128,7 +128,7 @@ const Left = ({dimensions, variablesNotation}) => <>
   )
   </span>
   <span className="surly">:</span>
-  <span className="surly">R<sup>{dimensions}</sup> -> R</span>
+  <span className="surly">R<sup>{dimensions}</sup> &rarr; R</span>
   <span className="surly">=</span>
   
 </>

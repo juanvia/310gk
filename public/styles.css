@@ -7,8 +7,8 @@ body {
   margin: 2rem;
   border: #e0e0e0 solid 1px;
   -webkit-box-shadow: 4px 4px 8px 0px rgba(208,208,208,1);
--moz-box-shadow: 4px 4px 8px 0px rgba(208,208,208,1);
-box-shadow: 4px 4px 8px 0px rgba(208,208,208,1);
+  -moz-box-shadow: 4px 4px 8px 0px rgba(208,208,208,1);
+  box-shadow: 4px 4px 8px 0px rgba(208,208,208,1);
   padding: 0.5rem;
 }
 .App {
@@ -17,9 +17,6 @@ box-shadow: 4px 4px 8px 0px rgba(208,208,208,1);
 }
 label {
   margin-right: 0.2rem;
-}
-input, select {
-  margin-right: 2rem;
 }
 .left {
     float: left;
@@ -33,8 +30,20 @@ input, select {
     clear: both;
 }
 .short {
-    width: 3rem;
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    width: 80%;
+}
+.marginated {
+    width: 80%;
 }
 .surly {
   margin-right: 0.5rem;
+}
+.div5 {
+  float: left;
+  width: 20%;
+  height: 7rem;
+  position: relative;
 }
