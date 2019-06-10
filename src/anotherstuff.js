@@ -112,21 +112,50 @@ const Term = ({powers, index, coefficientsNotation, variablesNotation }) => <>
   <Coefficient index={index} coefficientsNotation={coefficientsNotation}/>
   <Powers powers={powers} variablesNotation={variablesNotation}/>
 </>
+const Left = ({dimensions, variablesNotation}) => <>
+  <span className="surly">
+    {variablesNotation === 'pedantic' ? 'y' : variableNames[dimensions]}
+  </span>
+  <span className="surly">=</span>
+  <span className="surly"> f(
+      <span>
+        { 
+          variablesNotation !== 'pedantic'
+          ? range(0,dimensions).map(d => variableNames[d]).join(',')
+          : range(0,dimensions).map((d,i,a) => <>x<sub>{d+1}{i<a.length ? ',' : ''}</sub></>)
+        }
+      </span>
+  )
+  </span>
+  <span className="surly">:</span>
+  <span className="surly">R<sup>{dimensions}</sup> -> R</span>
+  <span className="surly">=</span>
+  
+</>
 
-export const Polynomial = ({coefficientsNotation, variablesNotation, stackedMatrix}) => (
+export const Polynomial = ({coefficientsNotation, variablesNotation, stackedMatrix}) => <div>
 
-  stackedMatrix.map((powers, index, array) => <span key={index}>
-    
-    <Term 
-      powers={powers} 
-      index={index}
-      coefficientsNotation={coefficientsNotation}
-      variablesNotation={variablesNotation} 
+    <Left 
+      dimensions={stackedMatrix[0].length} 
+      variablesNotation={variablesNotation}
     />
-    
-    {/* if not last separate with plus sign */}
-    {(index < array.length-1 ? ' + ' : '')} 
+
+    {stackedMatrix.map( (powers, index, array) => <span key={index}>
+        <Term 
+          powers={powers} 
+          index={index}
+          coefficientsNotation={coefficientsNotation}
+          variablesNotation={variablesNotation} 
+          />
+        
+        {/* if not last separate with plus sign */}
+        {(index < array.length-1 ? ' + ' : '')} 
+      
+      </span>
+      
+      )}
   
-  </span>)
+  </div>
   
-)
+
+

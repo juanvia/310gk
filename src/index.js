@@ -65,7 +65,7 @@ function App() {
     if (stackedMatrix.length > upperCases.length) {
       setCoefficientsNotation('pedantic')
     }
-    if (dimensions > variableNames.length) {
+    if (dimensions > variableNames.length - 1) {
       setVariablesNotation('pedantic')
     }
   }
@@ -81,10 +81,12 @@ function App() {
 
   const handleChangeOfCoefficientsNotation = e => {
     setCoefficientsNotation(e.target.value)
+    disciplineNotations(stackedMatrixOfGenerators)
   }
 
   const handleChangeOfVariablesNotation = e => {
     setVariablesNotation(e.target.value)
+    disciplineNotations(stackedMatrixOfGenerators)
   }
 
   const handleGoClick = () => {
