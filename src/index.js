@@ -4,7 +4,7 @@ import { reverse, zip } from "ramda";
 import { polynomial } from "math-playground";
 
 import { getExamples, Plot } from "./stuff";
-import { makeStackedMatrixOfGenerators, makePolynomial } from "./anotherstuff"
+import { makeStackedMatrixOfGenerators, Polynomial } from "./anotherstuff"
 
 const { matrix, multiply, transpose, inv } = require("mathjs");
 
@@ -57,8 +57,8 @@ function App() {
   const [dimensions, setDimensions] = useState(3);  
   const [degree, setDegree] = useState(3);
   const [stackedMatrixOfGenerators, setStackedMatrixOfGenerators] = useState(makeStackedMatrixOfGenerators(dimensions, degree))
-  const [coefficientsVariant, setCoefficientsVariant] = useState('traditional');
-  const [variablesVariant, setVariablesVariant] = useState('traditional');
+  const [coefficientsNotation, setCoefficientsNotation] = useState('traditional');
+  const [variablesNotation, setVariablesNotation] = useState('traditional');
 
   const handleChangeOfDegree = e => {
     setDegree(e.target.value)
@@ -68,12 +68,12 @@ function App() {
     setDimensions(e.target.value)
   }
 
-  const handleChangeOfCoefficientsVariant = e => {
-    setCoefficientsVariant(e.target.value)
+  const handleChangeOfCoefficientsNotation = e => {
+    setCoefficientsNotation(e.target.value)
   }
 
-  const handleChangeOfVariablesVariant = e => {
-    setVariablesVariant(e.target.value)
+  const handleChangeOfVariablesNotation = e => {
+    setVariablesNotation(e.target.value)
   }
 
   const handleGoClick = () => {
@@ -122,13 +122,13 @@ function App() {
             <input className="short" type="number" max="9" min="1" value={degree} name="degree" id="degree" onChange={handleChangeOfDegree}></input>
 
             <label>Coefficients</label>
-            <select onChange={handleChangeOfCoefficientsVariant}>
+            <select onChange={handleChangeOfCoefficientsNotation}>
                 <option value="traditional">Traditional</option>
                 <option value="pedantic">Pedantic</option>
             </select>
             
             <label>Variables</label>
-            <select onChange={handleChangeOfVariablesVariant}>
+            <select onChange={handleChangeOfVariablesNotation}>
                 <option value="traditional">Traditional</option>
                 <option value="pedantic">Pedantic</option>
             </select>
@@ -150,7 +150,7 @@ function App() {
             <h4>Generator matrix</h4>
 
             <pre>
-                {stackedMatrixOfGenerators.map((row,index) => row + "\n")}<br/>
+                {stackedMatrixOfGenerators.map(row => row + "\n")}<br/>
             </pre>
 
           </div>
@@ -159,7 +159,11 @@ function App() {
 
             <h4>Polynomial</h4>
 
-            {makePolynomial(coefficientsVariant, variablesVariant, stackedMatrixOfGenerators)}
+            <Polynomial 
+              coefficientsNotation={coefficientsNotation} 
+              variablesNotation={variablesNotation} 
+              stackedMatrix={stackedMatrixOfGenerators} 
+            />
 
           </div>
 
