@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { isEmpty, addIndex, chain,  remove, map,
-  append, repeat, uniq, concat, any, range, sum,
+  append, repeat, uniq, concat, range, sum,
   findIndex, findLastIndex, sort } from "ramda";
 
 
@@ -14,20 +14,19 @@ export const permutations = (tokens, subperms = [[]]) =>
   isEmpty(tokens) ? subperms
                   : addIndex(chain)((token, idx) => permutations( remove(idx, 1, tokens), map(append(token), subperms)), tokens)
 
-
-
-
-
 // ----- relax ------------------------------------------------------------
 // Makes more "plain" a vector (distribute its values)
 
 export const relax = powers => {
 
-  let toDecrementIndex = findLastIndex(e => e > 1, powers)
-  let toIncrementIndex = findIndex(e => e < powers[toDecrementIndex] - 1, powers)
+  let indexOfTheDecrementable = findLastIndex(e => e > 1, powers)
+  if (indexOfTheDecrementable === -1) return null
 
-  powers[toDecrementIndex] = powers[toDecrementIndex] - 1
-  powers[toIncrementIndex] = powers[toIncrementIndex] + 1
+  let indexOfTheIncrementable = findIndex(e => e < powers[indexOfTheDecrementable] - 1, powers)
+  if (indexOfTheIncrementable === -1) return null
+
+  --powers[indexOfTheDecrementable]
+  ++powers[indexOfTheIncrementable]
 
   return powers
 
@@ -39,40 +38,42 @@ export const relax = powers => {
 // Returns the value needed for sort a generator row
 
 const max = array => array.reduce((previous, current) => Math.max(previous, current), Number.MIN_VALUE)
-export const relevance = row => sum(row) * 1000000 + max(row) * 1000 + row.reduce((previous, current, index, array) => previous + 2 ** (array.length - index) * current, 0)
+export const relevance = row => sum(row) * 1000000 
+                                + max(row) * 1000 
+                                + row.reduce((previous, current, index, array) => previous + 2 ** (array.length - index) * current, 0)
 
 
 
 // ------ makeStackedMatrixOfGenerators -----------------------------------
 // Returns a matrix where each row is a generator for one term in the polynomial
+// a 'generator' is a vector containing the powers at which the correspondent 
+// independent variable must be raised
 
 export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
 
+
   let stackedMatrix = []
 
-  let powers = repeat(0, dimensions)  // This generator row is for permutate and stack those permutations in the matrix.
-  powers[0] = degree                  // At first all to the first one. High potential energy. High inequality. Lowest entropy.
+  let permutee = repeat(0, dimensions)  // This generator row is for permutate and stack those permutations in the matrix.
+  permutee[0] = degree                  // At first all to the first one. High potential energy. High inequality. Lowest entropy.
 
+  do {
 
-  while(any(e => e > 1)(powers)) {
+    stackedMatrix = concat(stackedMatrix, uniq(permutations(permutee)))
 
-    stackedMatrix = concat(stackedMatrix, uniq(permutations(powers)))
+    permutee = relax(permutee)      // step by step to social justice among the elements
 
-    powers = relax(powers)      // step by step to social justice among the elements
+  } while (permutee) 
 
-  }
-
-  // Don't forget the last term
-  stackedMatrix = concat(stackedMatrix, uniq(permutations(powers)))
 
   // The turn has come for lesser degrees
   if (degree > 0) {
 
-    stackedMatrix = concat(stackedMatrix, uniq(makeStackedMatrixOfGenerators(dimensions, degree - 1)))
+    stackedMatrix = concat(stackedMatrix, makeStackedMatrixOfGenerators(dimensions, degree - 1))
 
   }
 
-  return sort((a,b) => relevance(b) - relevance(a), uniq(stackedMatrix))
+  return sort((a, b) => relevance(b) - relevance(a), stackedMatrix)
 
 }
 
@@ -112,6 +113,7 @@ const Term = ({powers, index, coefficientsNotation, variablesNotation }) => <>
   <Coefficient index={index} coefficientsNotation={coefficientsNotation}/>
   <Powers powers={powers} variablesNotation={variablesNotation}/>
 </>
+
 const Left = ({dimensions, variablesNotation}) => <>
   <span className="surly">
     {variablesNotation === 'pedantic' ? 'y' : variableNames[dimensions]}
@@ -149,7 +151,7 @@ export const Polynomial = ({coefficientsNotation, variablesNotation, stackedMatr
           />
         
         {/* if not last separate with plus sign */}
-        {(index < array.length-1 ? ' + ' : '')} 
+        {(index < array.length-1 ? '  + ' : '')} 
       
       </span>
       
