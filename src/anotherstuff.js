@@ -84,17 +84,25 @@ export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
 
 export const upperCases = range(65, 65+26).map(charCode => String.fromCharCode(charCode))
 export const variableNames = "xyztuvw".split('')
+
 const PowerTraditionalNotation = ({power, powerIndex}) => <>
-  { power === 0 ? '' 
-                : variableNames[powerIndex % variableNames.length]
-  }
-  <sup>{ power<2 ? '' : power }</sup>
+  
+  {/** Variable name*/}
+  { power === 0 ? '' : variableNames[powerIndex] }
+  
+  {/** Power (superscripted) */}
+  <sup>{ power < 2 ? '' : power }</sup>
+
 </>
+
 const PowerPedanticNotation = ({power, powerIndex}) => <>
-  { power === 0 ? '' 
-                : <>x<sub>{powerIndex+1}</sub></>
-  }
-  <sup>{ power<2 ? '' : power }</sup>
+
+  {/** x subindexed  */}
+  { power === 0 ? '' : <>x<sub>{powerIndex+1}</sub></> }
+
+  {/** Power (superscripted) */}
+  <sup>{ power < 2 ? '' : power }</sup>
+
 </>
 
 const Powers = ({powers, variablesNotation}) => (
@@ -110,11 +118,14 @@ const Coefficient = ({index, coefficientsNotation}) =>
     : <>a<sub>{index+1}</sub></>
 
 const Term = ({powers, index, coefficientsNotation, variablesNotation }) => <>
+
   <Coefficient index={index} coefficientsNotation={coefficientsNotation}/>
   <Powers powers={powers} variablesNotation={variablesNotation}/>
+
 </>
 
 const Left = ({dimensions, variablesNotation}) => <>
+
   <span className="surly">
     {variablesNotation === 'pedantic' ? 'y' : variableNames[dimensions]}
   </span>
@@ -135,29 +146,38 @@ const Left = ({dimensions, variablesNotation}) => <>
   
 </>
 
+const Terms = ({coefficientsNotation, variablesNotation, stackedMatrix}) => <>{
+
+  stackedMatrix.map( (powers, index, array) => <span key={index}>
+
+    <Term 
+      powers={powers} 
+      index={index}
+      coefficientsNotation={coefficientsNotation}
+      variablesNotation={variablesNotation} 
+      />
+
+    {/* if not last separate with plus sign */}
+    {(index < array.length-1 ? '  + ' : '')} 
+
+  </span>
+
+)}</>
+
 export const Polynomial = ({coefficientsNotation, variablesNotation, stackedMatrix}) => <div>
 
     <Left 
       dimensions={stackedMatrix[0].length} 
       variablesNotation={variablesNotation}
+      />
+  
+    <Terms 
+      coefficientsNotation={coefficientsNotation}
+      variablesNotation={variablesNotation}
+      stackedMatrix={stackedMatrix}
     />
 
-    {stackedMatrix.map( (powers, index, array) => <span key={index}>
-        <Term 
-          powers={powers} 
-          index={index}
-          coefficientsNotation={coefficientsNotation}
-          variablesNotation={variablesNotation} 
-          />
-        
-        {/* if not last separate with plus sign */}
-        {(index < array.length-1 ? '  + ' : '')} 
-      
-      </span>
-      
-      )}
-  
-  </div>
+</div>
   
 
 
