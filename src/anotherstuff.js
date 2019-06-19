@@ -29,24 +29,56 @@ export const relevance = row => sum(row) * 1000000
 // independent variable must be raised
 
 const generateSeeds = (dimensions, degree) => {
+  
+  // This helper sums the vector's digits 
   const powersSum = s => s.reduce((total, digit) => total+digit, 0) 
-  let valids = []
-  for (let i=0; i<(degree+1) ** dimensions;++i) {
-    let s = sort((a,b) => Number(b)-Number(a),takeLast(dimensions,'00000000'+i.toString(Number(degree)+1)).split('').map(c => Number(c)))
-    if (powersSum(s) === degree) {
-      if (!contains(s,valids)) valids.push(s)
+  
+  // Initialize to empty
+  let seeds = []
+  
+  // All the posibilities are taken in count
+  let phaseSpaceCardinal = (degree + 1) ** dimensions
+  
+  // Visit the entire phase space searching for good points
+  for (let n = 0; n < phaseSpaceCardinal; ++n) {
+
+    const sortDescending = sort((a,b) => Number(b)-Number(a))
+    
+    // n expressed in base <degree+1>
+    let changedN = n.toString(Number(degree) + 1)
+
+    // n normalized (it's length must equal the value of the "dimensions" variable)
+    let normalizedN = takeLast(dimensions,'00000000'+changedN)
+
+    // n splitted (and ordered high to low)
+    let splittedN = sortDescending(normalizedN.split('').map(c => Number(c)))
+    
+    // n tested if it sum is correct
+    if (powersSum(splittedN) === degree) {
+
+      // n adopted if it is not already there 
+      if (!contains(splittedN,seeds)) {
+        
+        seeds.push(splittedN)
+      
+      }
     }
+
   }
-  return valids
+
+  return seeds
 }
 
 export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
   
+  // Shit happens
   degree = Number(degree)
 
+  // Recursion stopper
   if (degree === 0)
     return [repeat(0,dimensions)]
 
+  // Gathering the permutations of the seeds being created (Only those which sum of elements equals the given degree)
   let stack = generateSeeds(dimensions,degree).reduce(
       (stack, permutee) => concat(stack, uniq(permutations(permutee)))
       ,[]
@@ -55,7 +87,9 @@ export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
   // It's turn for lesser degrees
   stack = concat(stack, makeStackedMatrixOfGenerators(dimensions, degree-1))
 
+  // On delivery be polite and give a neat, ordered list
   return sort( (a, b) => relevance(b) - relevance(a), stack)
+
 }
 
 
