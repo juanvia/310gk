@@ -30,9 +30,6 @@ export const relevance = row => sum(row) * 1000000
 
 const generateSeeds = (dimensions, degree) => {
   
-  // This helper sums the vector's digits 
-  const powersSum = s => s.reduce((total, digit) => total+digit, 0) 
-  
   // Initialize the list of permutation seeds to empty
   let seeds = []
   
@@ -41,7 +38,7 @@ const generateSeeds = (dimensions, degree) => {
   
   // Visit the entire phase space searching for good points
   for (let nBinary = 0; nBinary < phaseSpaceCardinal; ++nBinary) {
-
+    
     // n expressed in base <degree+1>
     let nConverted = nBinary.toString(degree + 1)
     
@@ -53,8 +50,9 @@ const generateSeeds = (dimensions, degree) => {
     let nSplitted = sortDescending(nNormalized.split('').map(c => Number(c)))
     
     // n tested if its sum is correct
+    const powersSum = s => s.reduce((total, digit) => total+digit, 0) 
     if (powersSum(nSplitted) === degree) {
-
+      
       // n adopted if it isn't already there 
       if (!contains(nSplitted, seeds)) {
         
