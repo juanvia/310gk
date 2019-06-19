@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { isEmpty, addIndex, chain,  remove, map, append, uniq, 
-  concat, range, sum, takeLast, contains, sort, repeat } from "ramda";
+import { isEmpty, addIndex, chain,  remove, map, append, uniq, pair,
+  concat, range, sum, takeLast, contains, sort, repeat,pipe, reduce } from "ramda";
 
 
 
@@ -10,17 +10,17 @@ import { isEmpty, addIndex, chain,  remove, map, append, uniq,
 // Returns all permutations  a vector -----------------------------------------------
 
 export const permutations = (tokens, subperms = [[]]) =>
-  isEmpty(tokens) ? subperms
-                  : addIndex(chain)((token, idx) => permutations( remove(idx, 1, tokens), map(append(token), subperms)), tokens)
+  isEmpty(tokens) 
+    ? subperms
+    : addIndex(chain)((token, idx) => permutations( remove(idx, 1, tokens), map(append(token), subperms)), tokens)
 
 // ----- relevance --------------------------------------------------------
 // Returns the value needed for sort a generator row
 
 const max = array => array.reduce((previous, current) => Math.max(previous, current), Number.MIN_VALUE)
 export const relevance = row => sum(row) * 1000000 
-                                + max(row) * 1000 
-                                + row.reduce((previous, current, index, array) => previous + 2 ** (array.length - index) * current, 0)
-
+  + max(row) * 1000 
+  + row.reduce((previous, current, index, array) => previous + 2 ** (array.length - index) * current, 0)
 
 
 // ------ makeStackedMatrixOfGenerators -----------------------------------
@@ -39,19 +39,18 @@ const generateSeeds = (dimensions, degree) => {
   // Visit the entire phase space searching for good points
   for (let nBinary = 0; nBinary < phaseSpaceCardinal; ++nBinary) {
     
-    // n expressed in base <degree+1>
+    // n expressed in base <degree+1>. This is the punch line!
     let nConverted = nBinary.toString(degree + 1)
     
-    // n normalized (it's length must equal the value of the "dimensions" variable)
-    let nNormalized = takeLast(dimensions,'00000000'+nConverted)
+    // n normalized (its length must equal the value of the "dimensions" variable)
+    let nNormalized = takeLast(dimensions,'00000000' + nConverted)
     
     // n splitted (and ordered high to low)
-    const sortDescending = sort((a,b) => b-a)
+    const sortDescending = sort((a,b) => b - a)
     let nSplitted = sortDescending(nNormalized.split('').map(c => Number(c)))
     
-    // n tested if its sum is correct
-    const powersSum = s => s.reduce((total, digit) => total+digit, 0) 
-    if (powersSum(nSplitted) === degree) {
+    // n tested (if its sum is correct)
+    if (reduce( pipe(pair,sum), 0 )(nSplitted) === degree) {
       
       // n adopted if it isn't already there 
       if (!contains(nSplitted, seeds)) {
@@ -59,6 +58,7 @@ const generateSeeds = (dimensions, degree) => {
         seeds.push(nSplitted)
       
       }
+      
     }
 
   }
