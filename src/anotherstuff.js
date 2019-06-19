@@ -42,7 +42,6 @@ const generateSeeds = (dimensions, degree) => {
   // Visit the entire phase space searching for good points
   for (let n = 0; n < phaseSpaceCardinal; ++n) {
 
-    
     // n expressed in base <degree+1>
     let changedN = n.toString(Number(degree) + 1)
     
@@ -67,6 +66,7 @@ const generateSeeds = (dimensions, degree) => {
   }
 
   return seeds
+  
 }
 
 export const makeStackedMatrixOfGenerators = (dimensions, degree) => {

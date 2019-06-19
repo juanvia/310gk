@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import { makeStackedMatrixOfGenerators, Polynomial, upperCases, variableNames } from "./anotherstuff"
+import {combinations} from 'mathjs'
+
 const Section = ({children}) => <div className="Section"> {children} </div>
 
 function App() {
@@ -140,12 +142,23 @@ function App() {
 const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
 
-// const optimalDegree = (dim, pointsLength) => {
-//   let degree = 1
-//   for (; makeStackedMatrixOfGenerators(dim, degree).length < pointsLength; ++degree)
-//     ;
-//   return degree
-// }
+const optimalDegree = (dim, pointsLength) => {
+  
+  let degree = 1
+  
+  do {
 
-// console.log(optimalDegree(3,40))
+    ++degree
+  
+  } while(combinations(degree+dim,dim) < pointsLength)
+  
+  return degree-1
+
+}
+
+for (let degree=1; degree<10; ++degree) {
+  console.log(`Para el grado ${degree} se necesitan por lo menos ${combinations(3+degree, 3)} puntos.`)
+}
+
+console.log(`El grado óptimo para 40 puntos (tres dimensiones) es ${optimalDegree(3,40)}.`)
 
