@@ -42,15 +42,15 @@ const generateSeeds = (dimensions, degree) => {
   // Visit the entire phase space searching for good points
   for (let n = 0; n < phaseSpaceCardinal; ++n) {
 
-    const sortDescending = sort((a,b) => Number(b)-Number(a))
     
     // n expressed in base <degree+1>
     let changedN = n.toString(Number(degree) + 1)
-
+    
     // n normalized (it's length must equal the value of the "dimensions" variable)
     let normalizedN = takeLast(dimensions,'00000000'+changedN)
-
+    
     // n splitted (and ordered high to low)
+    const sortDescending = sort((a,b) => Number(b)-Number(a))
     let splittedN = sortDescending(normalizedN.split('').map(c => Number(c)))
     
     // n tested if it sum is correct
