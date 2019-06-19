@@ -40,25 +40,25 @@ const generateSeeds = (dimensions, degree) => {
   let phaseSpaceCardinal = (degree + 1) ** dimensions
   
   // Visit the entire phase space searching for good points
-  for (let n = 0; n < phaseSpaceCardinal; ++n) {
+  for (let nBinary = 0; nBinary < phaseSpaceCardinal; ++nBinary) {
 
     // n expressed in base <degree+1>
-    let changedN = n.toString(Number(degree) + 1)
+    let nConverted = nBinary.toString(degree + 1)
     
     // n normalized (it's length must equal the value of the "dimensions" variable)
-    let normalizedN = takeLast(dimensions,'00000000'+changedN)
+    let nNormalized = takeLast(dimensions,'00000000'+nConverted)
     
     // n splitted (and ordered high to low)
-    const sortDescending = sort((a,b) => Number(b)-Number(a))
-    let splittedN = sortDescending(normalizedN.split('').map(c => Number(c)))
+    const sortDescending = sort((a,b) => b-a)
+    let nSplitted = sortDescending(nNormalized.split('').map(c => Number(c)))
     
-    // n tested if it sum is correct
-    if (powersSum(splittedN) === degree) {
+    // n tested if its sum is correct
+    if (powersSum(nSplitted) === degree) {
 
-      // n adopted if it is not already there 
-      if (!contains(splittedN, seeds)) {
+      // n adopted if it isn't already there 
+      if (!contains(nSplitted, seeds)) {
         
-        seeds.push(splittedN)
+        seeds.push(nSplitted)
       
       }
     }
@@ -66,7 +66,7 @@ const generateSeeds = (dimensions, degree) => {
   }
 
   return seeds
-  
+
 }
 
 export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
