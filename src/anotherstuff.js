@@ -33,7 +33,7 @@ const generateSeeds = (dimensions, degree) => {
   // This helper sums the vector's digits 
   const powersSum = s => s.reduce((total, digit) => total+digit, 0) 
   
-  // Initialize to empty
+  // Initialize the list of permutation seeds to empty
   let seeds = []
   
   // All the posibilities are taken in count
@@ -57,7 +57,7 @@ const generateSeeds = (dimensions, degree) => {
     if (powersSum(splittedN) === degree) {
 
       // n adopted if it is not already there 
-      if (!contains(splittedN,seeds)) {
+      if (!contains(splittedN, seeds)) {
         
         seeds.push(splittedN)
       
@@ -71,7 +71,7 @@ const generateSeeds = (dimensions, degree) => {
 
 export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
   
-  // Shit happens
+  // ... happens
   degree = Number(degree)
 
   // Recursion stopper
@@ -79,10 +79,7 @@ export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
     return [repeat(0,dimensions)]
 
   // Gathering the permutations of the seeds being created (Only those which sum of elements equals the given degree)
-  let stack = generateSeeds(dimensions,degree).reduce(
-      (stack, permutee) => concat(stack, uniq(permutations(permutee)))
-      ,[]
-    )
+  let stack = generateSeeds(dimensions,degree).reduce((stack, seed) => concat(stack, uniq(permutations(seed))) ,[] )
   
   // It's turn for lesser degrees
   stack = concat(stack, makeStackedMatrixOfGenerators(dimensions, degree-1))
