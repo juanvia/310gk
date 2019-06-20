@@ -30,7 +30,7 @@ const generateSeeds = (dimensions, degree) => {
   // Initialize the list of permutation seeds to empty
   let seeds = []
   
-  // All the posibilities are taken in count
+  // All the posibilities are taken into account
   let phaseSpaceCardinal = (degree + 1) ** dimensions
   
   // Visit the entire phase space searching for good points
