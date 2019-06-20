@@ -4,7 +4,7 @@ import { repeat,concat,sort, sum, takeLast, reduce,add, map, pipe, split } from 
 
 
 // ----- permutations -----------------------------------------------------
-// Returns all permutations of a vector -----------------------------------------------
+// Returns all permutations of a vector -----------------------------------
 
 export const relevance = row => {
     return sum(row) * 1000000 
@@ -19,7 +19,7 @@ export const relevance = row => {
 
 const takeValidsForDegree = (dimensions, degree) => {
   
-  // Initialize the list of valid points to zero vector in <dimensions> space
+  // Initialize the list of valid points to empty
   let seeds = []
   
   // All the posibilities are taken into account
@@ -60,7 +60,7 @@ export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
 
   for (let currentDegree = Number(degree); currentDegree > 0; --currentDegree) {
     // Gathering seeds being created (Only those which sum of elements equals the given degree)
-    stack = concat(stack, takeValidsForDegree(dimensions,currentDegree))
+    stack = concat(stack, takeValidsForDegree(dimensions, currentDegree))
   }
 
   // On delivery be polite and give a neat, ordered list
