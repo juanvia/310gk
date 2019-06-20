@@ -31,14 +31,13 @@ const takeValidsForDegree = (dimensions, degree) => {
     // n expressed in base <degree+1>. This is the punch line!
     let nConverted = nBinary.toString(degree + 1)
       
+    // from digit chars string to array of digit
     const transform = pipe(
       concat('0000000000'),         // ensure enough length for next step
       takeLast(dimensions),         // the length must equals the value of the "dimensions" variable
       split(''),                    // transform the number string representation to an array of chars
       map(Number)                   // array of chars to array of numbers (one digit each)
     ) 
-    
-    // from digit chars string array of digit
     let nCandidate = transform(nConverted)
 
     // n tested (and adopted if its sum is correct)
