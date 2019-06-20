@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { isEmpty, addIndex, chain,  remove, map, append, uniq, pair,
-  concat, range, sum, takeLast, contains, sort, repeat,pipe, reduce } from "ramda";
+import { isEmpty, addIndex, chain,  remove, map, append, uniq, 
+  concat, range, sum, takeLast, contains, sort, repeat,add, reduce } from "ramda";
 
 
 
@@ -50,7 +50,7 @@ const generateSeeds = (dimensions, degree) => {
     let nSplitted = sortDescending(nNormalized.split('').map(c => Number(c)))
     
     // n tested (if its sum is correct)
-    if (reduce( pipe(pair,sum), 0 )(nSplitted) === degree) {
+    if (reduce( add, 0 )(nSplitted) === degree) {
       
       // n adopted if it isn't already there 
       if (!contains(nSplitted, seeds)) {
