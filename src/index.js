@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import ReactDOM from "react-dom";
-import { makeStackedMatrixOfGenerators, Polynomial, upperCases, variableNames } from "./anotherstuff"
+import { Polynomial, upperCases, variableNames } from "./anotherstuff"
+import { makeStackedMatrixOfGenerators } from "./powers-list"
 import {combinations} from 'mathjs'
 
 const Section = ({children}) => <div className="Section"> {children} </div>
