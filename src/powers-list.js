@@ -19,7 +19,7 @@ export const relevance = row => {
 
 const takeValidsForDegree = (dimensions, degree) => {
   
-  // Initialize the list of permutation seeds to zero vector in <dimensions> space
+  // Initialize the list of valid points to zero vector in <dimensions> space
   let seeds = []
   
   // All the posibilities are taken into account
