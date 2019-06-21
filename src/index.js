@@ -3,14 +3,20 @@ import ReactDOM from "react-dom";
 import { Polynomial, upperCases, variableNames } from "./anotherstuff"
 import { makeStackedMatrixOfGenerators } from "./powers-list"
 import {combinations} from 'mathjs'
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/styles'
+import theme from './theme';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 
-const Section = ({children}) => <div className="Section"> {children} </div>
 
 function App() {
 
   const [dimensions, setDimensions] = useState(3);  
   const [degree, setDegree] = useState(6);
-  const [stackedMatrixOfGenerators, setStackedMatrixOfGenerators] = useState(makeStackedMatrixOfGenerators(dimensions, degree))
+  const [stackedMatrixOfGenerators, setStackedMatrixOfGenerators] = useState(makeStackedMatrixOfGenerators(3, 6))
   const [coefficientsNotation, setCoefficientsNotation] = useState('traditional');
   const [variablesNotation, setVariablesNotation] = useState('traditional');
 
@@ -31,7 +37,8 @@ function App() {
   }
 
   const handleChangeOfDimensions = e => {
-    setDimensions(e.target.value)
+    if (dimensions >= 0 && dimensions <= 6)
+      setDimensions(e.target.value)
   }
 
   const handleChangeOfCoefficientsNotation = e => {
@@ -49,24 +56,24 @@ function App() {
     disciplineNotations(stackedMatrix)
     setStackedMatrixOfGenerators(stackedMatrix)
   }
-
+  
   return (
 
-    <div className="App">
-
-        <Section>
-
-          <h3>&#x211D;<sup>n</sup>&#xffeb;&#x211D; polynomial generator</h3>
-          
+    <Container >
+      <Box my={4}>
+        <Typography variant="h4" component="h1" gutterBottom color="textSecondary">
+          Multivariable polynomials
+        </Typography>
+        <div className="App">
           <div>
             <div className="div5">
                 <div className="marginated">Domain dimension (number of independent variables)</div>
-                <input className="short" type="text" value={dimensions} name="dimensions" id="dimensions" onChange={handleChangeOfDimensions}></input>
+                <input className="short" type="number" value={dimensions} name="dimensions" id="dimensions" onChange={handleChangeOfDimensions}/>
             </div>
 
             <div className="div5">
                 <div className="marginated">Polynomial's degree</div>
-                <input className="short" type="text" value={degree} name="degree" id="degree" onChange={handleChangeOfDegree}></input>
+                <input className="short" type="number" value={degree} name="degree" id="degree" onChange={handleChangeOfDegree}/>
             </div>
 
             <div className="div5">
@@ -102,32 +109,31 @@ function App() {
           
           </p>
 
-          <div className="left">
+          <Grid container spacing={3}>
+            <Grid item xs={4}>
+              <Typography variant="subtitle2" component="h1" gutterBottom>
+                Powers matrix
+              </Typography>
+              <div style={{fontFamily: 'monaco, monospace', cursive: true, lineHeight: 1.5, fontSize: '0.7rem'}}>
+                {JSON.stringify(stackedMatrixOfGenerators)}
+              </div>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography variant="subtitle2" component="h1" gutterBottom>
+                Polynomial
+              </Typography>
+              <Polynomial 
+                coefficientsNotation={coefficientsNotation} 
+                variablesNotation={variablesNotation} 
+                stackedMatrix={stackedMatrixOfGenerators}
+              />
+            </Grid>
+          </Grid>
 
-            <h4>Powers matrix</h4>
-
-            <pre>
-                {stackedMatrixOfGenerators.map(row => row + "\n")}<br/>
-            </pre>
-
-          </div>
-
-          <div className="right">
-
-            <h4>Polynomial</h4>
-
-            <Polynomial 
-              coefficientsNotation={coefficientsNotation} 
-              variablesNotation={variablesNotation} 
-              stackedMatrix={stackedMatrixOfGenerators} 
-            />
-
-          </div>
-
-          <div className="clear"></div>
-
-        </Section>
-      </div>
+        </div>
+      </Box>
+    </Container>
+  
   );
 }
 
@@ -141,7 +147,12 @@ function App() {
 
 
 const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+ReactDOM.render(
+  <ThemeProvider theme={theme}>
+    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+    <CssBaseline />
+    <App />
+  </ThemeProvider>, rootElement);
 
 const optimalDegree = (dim, pointsLength) => {
   

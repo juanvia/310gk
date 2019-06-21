@@ -90,17 +90,20 @@ const Terms = ({coefficientsNotation, variablesNotation, stackedMatrix}) => <>{
 )}</>
 
 export const Polynomial = ({coefficientsNotation, variablesNotation, stackedMatrix}) => <div>
+  <div style={{fontFamily: 'Shadows Into Light', cursive: true, lineHeight: 1, fontSize: '1.3rem'}} >
 
     <Left 
       dimensions={stackedMatrix[0].length} 
       variablesNotation={variablesNotation}
-    />
+      />
   
     <Terms 
       coefficientsNotation={coefficientsNotation}
       variablesNotation={variablesNotation}
       stackedMatrix={stackedMatrix}
-    />
+      />
+
+  </div>
 
 </div>
   

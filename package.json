@@ -5,6 +5,8 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "@material-ui/core": "^4.1.1",
+    "@material-ui/icons": "^4.2.0",
     "math-playground": "0.3.0",
     "mathjs": "5.10.3",
     "ramda": "0.26.1",
