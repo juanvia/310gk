@@ -47,7 +47,7 @@ const transform = (size, base, number) => pipe(
 // Note that in base-3 (m+1) the first nine numbers are 00, 01, 02, 10, 11, 12, 20, 21 and 22 
 // -------------------------------------------------------------------------------
 // There is a bijection betwen A and the non-negative integers from
-// zero to (m+1)^n. Also A can be viewed as the set of those integers expressed in
+// zero to (m+1)^n-1. Also A can be viewed as the set of those integers expressed in
 // base (m+1). The algorithm takes advantage of that.
 // Reminder:
 // - n denotes the numbers of dimensions of A (the phase space)
