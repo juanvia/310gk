@@ -36,7 +36,7 @@ const takeValidsForDegree = (dimensions, degree) => {
   // All the posibilities are taken into account
   let phaseSpaceCardinal = (degree + 1) ** dimensions
 
-  // Visit the entire phase space searching for good point
+  // Visit the entire phase space searching for good points
   for (let ordinal = 0; ordinal < phaseSpaceCardinal; ++ordinal) {
 
     // the number expressed in base <degree+1>. This is the punch line!
