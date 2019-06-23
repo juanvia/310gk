@@ -33,6 +33,7 @@ const transform = (size, base, number) => pipe(
 // Where n < 6 and m < 10 (i.e. the elements of V are digits)
 // The function below gives us a subset of A whose points p fullfill the contstraint:
 // The sum of digits of p is less or equal to m
+// -------------------------------------------------------------------------------
 // Example:
 //
 // 2      (2,0)  (2,1)  (2,2)
