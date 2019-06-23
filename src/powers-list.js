@@ -67,7 +67,7 @@ export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
     return [repeat(0,dimensions)]
   }
 
-  // Gathering seeds being created (Only those which sum of elements equals the given degree)
+  // Gathering the points whose sum of elements is less or equal to the given degree
   let stack = takeValidsForDegree(dimensions, degree)
 
   // On delivery be polite and give a neat, ordered list
