@@ -19,15 +19,13 @@ export const relevance = row => {
 
 
 
-
-const transform = (nBinary, size, base) => pipe(
+// Delivers an array of given size of digits of given number expressed in given base
+const transform = (size, base, number) => pipe(
     concat('0000000000'),         // ensure enough length for next step
     takeLast(size),               // the length must equals the value of the "size" variable
     split(''),                    // transform the number string representation to an array of chars
     map(Number)                   // array of chars to array of numbers (one digit each)
-) (nBinary.toString(base))        // send to pipe the number in <base>ary form
-
-
+) (number.toString(base))         // send to pipe the number in <base>ary form
 
 
 const takeValidsForDegree = (dimensions, degree) => {
@@ -39,15 +37,15 @@ const takeValidsForDegree = (dimensions, degree) => {
   let phaseSpaceCardinal = (degree + 1) ** dimensions
 
   // Visit the entire phase space searching for good point
-  for (let nBinary = 0; nBinary < phaseSpaceCardinal; ++nBinary) {
+  for (let ordinal = 0; ordinal < phaseSpaceCardinal; ++ordinal) {
 
-    // n expressed in base <degree+1>. This is the punch line!
-    let nCandidate = transform(nBinary, dimensions, degree+1)
+    // the number expressed in base <degree+1>. This is the punch line!
+    let point = transform(dimensions, degree+1, ordinal)
 
-    // n tested (and adopted if its sum is correct)
-    if (reduce(add, 0)(nCandidate) <= degree) {
+    // the point tested (and adopted if its sum is correct)
+    if (reduce(add, 0)(point) <= degree) {
 
-      valids.push(nCandidate)
+      valids.push(point)
 
     }
 
