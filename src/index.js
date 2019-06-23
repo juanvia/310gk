@@ -33,12 +33,12 @@ function App() {
   const handleChangeOfDegree = e => {
     let degree = e.target.value
     if (degree >= 0 && degree <= 9)
-      setDegree(e.target.value)
+      setDegree(Number(e.target.value))
   }
 
   const handleChangeOfDimensions = e => {
     if (dimensions >= 0 && dimensions <= 6)
-      setDimensions(e.target.value)
+      setDimensions(Number(e.target.value))
   }
 
   const handleChangeOfCoefficientsNotation = e => {

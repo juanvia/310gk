@@ -17,51 +17,48 @@ export const relevance = row => {
 // a 'generator' is a vector containing the powers at which the correspondent 
 // independent variable must be raised
 
+
+const transform = (nBinary, size, base) => pipe(
+    concat('0000000000'),         // ensure enough length for next step
+    takeLast(size),               // the length must equals the value of the "size" variable
+    split(''),                    // transform the number string representation to an array of chars
+    map(Number)                   // array of chars to array of numbers (one digit each)
+) (nBinary.toString(base))        // send to pipe the number in <base>ary form
+
 const takeValidsForDegree = (dimensions, degree) => {
   
   // Initialize the list of valid points to empty
-  let seeds = []
+  let valids = []
   
   // All the posibilities are taken into account
   let phaseSpaceCardinal = (degree + 1) ** dimensions
 
   // Visit the entire phase space searching for good points
-  for (let nBinary = 0; nBinary < phaseSpaceCardinal; ++nBinary) {
+  for (let nBinary = 1; nBinary < phaseSpaceCardinal; ++nBinary) {
 
     // n expressed in base <degree+1>. This is the punch line!
-    let nConverted = nBinary.toString(degree + 1)
-      
-    // from digit chars string to array of digit
-    const transform = pipe(
-      concat('0000000000'),         // ensure enough length for next step
-      takeLast(dimensions),         // the length must equals the value of the "dimensions" variable
-      split(''),                    // transform the number string representation to an array of chars
-      map(Number)                   // array of chars to array of numbers (one digit each)
-    ) 
-    let nCandidate = transform(nConverted)
+    let nCandidate = transform(nBinary, dimensions, degree+1)
 
     // n tested (and adopted if its sum is correct)
-    if (reduce(add, 0)(nCandidate) === degree) {
+    if (reduce(add, 0)(nCandidate) <= degree) {
 
-      seeds.push(nCandidate)
+      valids.push(nCandidate)
 
     }
 
   }
 
-  return seeds
+  return valids
 
 }
 
 export const makeStackedMatrixOfGenerators = (dimensions, degree) => {
   
-  
-  let stack = [repeat(0,dimensions)]
+  // Gathering seeds being created (Only those which sum of elements equals the given degree)
+  let stack = takeValidsForDegree(dimensions, degree)
 
-  for (let currentDegree = Number(degree); currentDegree > 0; --currentDegree) {
-    // Gathering seeds being created (Only those which sum of elements equals the given degree)
-    stack = concat(stack, takeValidsForDegree(dimensions, currentDegree))
-  }
+  // Add zero degree case
+  stack.push(repeat(0,dimensions))
 
   // On delivery be polite and give a neat, ordered list
   const byRelevance = (a, b) => relevance(b) - relevance(a)
